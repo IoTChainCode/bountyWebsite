@@ -1,0 +1,81 @@
+﻿<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>candy_system</title>
+		<script src="js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+	</head>
+
+	<body>
+		<div class="wrapall">
+			<div class="wraptop">
+				<img src="imgs/logo.png" />
+				<p class="mailp">Subscribe to us. When there is a new reward, we will inform you.</p>
+				<input type="text" placeholder="Enter  Your  Email  Address" id="emailAddress" />
+				<button id="sentEmail">Subscribe</button>
+			</div>
+		</div>
+		<canvas id="space" style="height:100%;width:100%"></canvas>
+
+		<script type="text/javascript">
+			$(function() {
+				//1、地址栏中url的参数值  
+				function getQueryString(name) {
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+					var r = window.location.search.substr(1).match(reg);
+					if(r != null)
+						return unescape(r[2]);
+					return null;
+				}
+				var privateCode = getQueryString("privateCode");
+				//必须携带privateCode 否则跳转回去
+				if(privateCode == null) {
+					window.location = "index.html";
+					return false;
+				}
+				 
+				//3、发送邮件
+				$('#sentEmail').click(function() {
+					var mail = $.trim($('#emailAddress').val()); //获取邮箱地址
+					var isEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //邮箱格式正则
+					var mailUrl = "https://api.iotchain.io/sendVerifyMail"; //邮箱接口
+					if(mail.length == 0) {
+						alert("邮箱不能为空");
+					} else if(!(isEmail.test(mail))) {
+						alert("邮箱格式不正确");
+					} else {
+						//防止一个邮箱已经激活后，进行二次邮件发送进行激活
+						$.ajax({
+							type: "POST",
+							url: mailUrl,
+							dataType: 'json',
+							timeout: 20000, // 设置超时
+							data: "mail=" + mail + "&privateCode=" + privateCode,
+							beforeSend: function(xhr) {
+								index = layer.load(1, {
+									shade: [0.1, '#fff'] //0.1透明度的白色背景
+								});
+							},
+							success: function(data) {
+								if(data.code == 200) {
+									console.log(data.msg);
+									//邮件发送成功返回200,判断邮箱状态是否激活过,通过邮箱链接进行激活
+									alert("请到 " + mail + " 邮箱查看并点击链接激活,如果未收到请仔细检查邮箱是否正确");
+								}
+							},
+							complete: function() {
+								layer.close(index);
+							}
+						});
+					}
+				})
+			})
+		</script>
+		<script src="js/starcanvas.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

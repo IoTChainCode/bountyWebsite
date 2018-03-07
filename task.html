@@ -1,0 +1,263 @@
+﻿<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>candy_system</title>
+		<script src="js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.zclip.js" type="text/javascript" charset="utf-8"></script>
+		<!--fackbook分享的内容 版本比较老旧 可能存在点问题-->
+		<meta property="og:title" content="分享到facebook">
+		<meta property="og:type" content="分享到facebook">
+		<meta property="og:image" content="//www.baidu.com/img/bd_logo1.png">
+		<meta property="og:description" content="百度一下，你就知道">
+		<!--fackbook分享的内容 版本比较老旧 可能存在点问题-->
+	</head>
+
+	<body>
+		<script>
+			$(function() {
+				//1、获取URL中的参数部分
+				function getQueryString(name) {
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+					var r = window.location.search.substr(1).match(reg);
+					if(r != null)
+						return unescape(r[2]);
+					return null;
+				}
+				privateCode = getQueryString("privateCode");
+				//必须携带privateCode 否则跳转回去
+				if(privateCode==null){
+					//必须存在且必须为32位直接跳转过来返回去
+					window.location="index.html";
+					return false;
+				}
+			})
+			//分享到facebook
+			$(document).ready(function() {
+				$.ajaxSetup({
+					cache: true
+				});
+				$.getScript('https://connect.facebook.net/en_US/sdk.js', function() {
+					FB.init({
+						appId: '175191809927607',
+						version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+					});
+					//触发分享功能
+					$('#facebookshare').click(function() {
+						//分享过禁用分享
+						if($(this).hasClass("hascompleted")) {
+							alert('在facebook上,您已经分享过了');
+							return false;
+						}
+						FB.ui({
+							method: 'share',
+							href: 'https://developers.facebook.com/docs/'
+						}, function(response) {
+							//分享成功的回调
+							$.ajax({
+								type: "POST",
+								url: "https://api.iotchain.io/shareFacebook",
+								dataTpye: 'json',
+								data: "privateCode=" + privateCode,
+								beforeSend: function (xhr) {
+									index = layer.load(1, {
+									  shade: [0.1,'#fff'] //0.1透明度的白色背景
+									});
+					            },
+								success: function(data) {
+									if(data.code == 200) {
+										$('#facebookshare').html('').text("COMPLETED").addClass('hascompleted');
+									}
+								},
+								complete: function(){
+						   	  		layer.close(index);   
+						   	    }
+							});
+						});
+					})
+				});
+			});
+		</script>
+		<script>
+			//分享到twitter
+			window.twttr = (function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0],
+					t = window.twttr || {};
+				if(d.getElementById(id)) return t;
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "https://platform.twitter.com/widgets.js";
+				fjs.parentNode.insertBefore(js, fjs);
+				t._e = [];
+				t.ready = function(f) {
+					t._e.push(f);
+				};
+				return t;
+			}(document, "script", "twitter-wjs"));
+			twttr.ready(function(twttr) {
+				twttr.events.bind('tweet', function(event) {
+					//twitter 回调
+					$.ajax({
+						type: "POST",
+						url: "https://api.iotchain.io/shareTwitter",
+						dataTpye: 'json',
+						data: "privateCode=" + privateCode,
+						beforeSend: function (xhr) {
+							index = layer.load(1, {
+							  shade: [0.1,'#fff'] //0.1透明度的白色背景
+							});
+			            },
+						success: function(data) {
+							//tw分享完成
+							if(data.code == 200) {
+								$('#twitterSharefa').html('').text("COMPLETED").addClass('hascompleted');
+							}
+						},
+						complete: function(){
+						   	layer.close(index);   
+						}
+					});
+				})
+			});
+			$(function() {
+				$('#twitterSharefa').click(function() {
+					if($(this).hasClass('hascompleted')) {
+						alert('在twitter上,您已经分享过了');
+					}
+				})
+			})
+		</script>
+		<div class="wrapall">
+			<div class="wraptop">
+				<img src="imgs/logo.png" id="sharebtn" />
+				<div class="spacingline"></div>
+				<div class="task clearfix">
+					<div class="taskheader"></div>
+					<div class="taskbody clearfix">
+						<dl>
+							<dt>TASK 1 </dt>
+							<dd class="clearfix">
+								<img src="imgs/icon_03.png" />
+								<span>Invite your friends to join our system through your specific links.
+							 		<br />Your invitation link【<em style="font-style: normal;" id="copylink">www.xxxxxx.xxxxx.xxxxx</em>】
+							 		</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_07.png" />
+								<span>2018/2/25~2018/3/25</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_10.png" />
+								<span>1 ITC/Person</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_12.png" />
+								<span>Number of invitations : <em style="font-style: normal;" id="invnum">0</em></span>
+							</dd>
+						</dl>
+						<a href="javascript:void(0)" class="tasklink" id="copylinkBtn">COPY LINK</a>
+					</div>
+					<div class="taskfooter"></div>
+				</div>
+
+				<div class="task clearfix">
+					<div class="taskheader"></div>
+					<div class="taskbody clearfix">
+						<dl>
+							<dt>TASK 2</dt>
+							<dd class="clearfix">
+								<img src="imgs/icon_03.png" />
+								<span>Sharing the specified message about ITC on your FACEBOOK.</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_07.png" />
+								<span>2018/2/25~2018/3/25</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_10.png" />
+								<span>1 ITC</span>
+							</dd>
+						</dl>
+						<span class="tasklink" id="facebookshare"><img src="imgs/Facebook.png"/><em>SHARE</em></span>
+					</div>
+					<div class="taskfooter"></div>
+				</div>
+
+				<div class="task clearfix">
+					<div class="taskheader"></div>
+					<div class="taskbody clearfix">
+						<dl>
+							<dt>TASK 3</dt>
+							<dd class="clearfix">
+								<img src="imgs/icon_03.png" />
+								<span>Sharing the specified message about ITC on your Twitter.</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_07.png" />
+								<span>2018/2/25~2018/3/25</span>
+							</dd>
+							<dd class="clearfix">
+								<img src="imgs/icon_10.png" />
+								<span>1 ITC</span>
+							</dd>
+						</dl>
+						<span class="tasklink" id="twitterSharefa">
+							<a href="https://twitter.com/intent/tweet?text=分享的内容" id="twitterShare">
+								<img src="imgs/Twitter.png"/><em>SHARE</em>
+							</a>
+						</span>
+					</div>
+					<div class="taskfooter"></div>
+				</div>
+			</div>
+		</div>
+		<canvas id="space" style="height:100%;width:100%"></canvas>
+		<script type="text/javascript">
+			$(function() {
+				//1、复制分享链接
+				var sharelink = "https://candy.iotchain.io/index.html" + "?inviterCode=" + privateCode;
+				$('#copylink').html(sharelink);
+				var clipboard = new Clipboard('#copylinkBtn', {
+					text: function() {
+						return sharelink;
+					}
+				});
+				clipboard.on('success', function(e) {
+					alert("复制成功");
+				});
+				//2、传递参数从getMe接口中获取数据
+				var getMeUrl = "https://api.iotchain.io/getMe";
+				$.ajax({
+					type: "GET",
+					url: getMeUrl,
+					dataType: 'json',
+					timeout:20000, // 设置超时
+					data: "privateCode=" + privateCode,
+					success: function(data) {
+						var twitterTaskSign = data.data.twitterTaskSign; //twitterTaskSign分享是否完成
+						var facebookTaskSign = data.data.facebookTaskSign; //facebookTaskSign分享是否完成
+						if(data.code == 200) {
+							//fb分享完成
+							if(facebookTaskSign == false) {
+								$('#facebookshare').html('').text("COMPLETED").addClass('hascompleted');
+							}
+							//tw分享完成
+							if(twitterTaskSign == false) {
+								$('#twitterSharefa').html('').text("COMPLETED").addClass('hascompleted');
+							}
+							//要求到的人数
+							$('#invnum').text(data.data.inviteCount);
+						}
+					}
+				})
+			})
+		</script>
+		<script src="js/starcanvas.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

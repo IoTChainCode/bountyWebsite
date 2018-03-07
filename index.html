@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>candy_system</title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="layer/layer.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapall">
+			<div class="wraptop">
+				<img src="imgs/logo.png" />
+				<p class="indexp">Welcome to join our system. Welcome to join our system. Welcome to join our <br/> system. Welcome to join our system.
+					<a href="">Activity Rules ></a>
+				</p>
+				<input type="text" placeholder="Enter  Your  ETH  Address" id="ethAddress" />
+				<button id="indexEnter">Enter</button>
+			</div>
+		</div>
+		<canvas id="space" style="height:100%;width:100%"></canvas>
+		<script type="text/javascript">
+			$(function() {
+				function getQueryString(name) {  
+				    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+				    var r = window.location.search.substr(1).match(reg);  
+				    if (r != null)  
+				        return unescape(r[2]);  
+				    return null;  
+				}  
+				//获取URL中的邀请码部分
+				var inviterCode = getQueryString("inviterCode");
+				if(inviterCode==null || inviterCode.length!=32){
+					inviterCode="";
+				}
+				
+				$('#indexEnter').click(function() {
+					var ethAddress = $.trim($('#ethAddress').val());
+					if(ethAddress.length != 42) {
+						alert("请填写内容不能为空,且长度必须为42位");
+						return false;
+					}
+					var interfaceAddress = "https://api.iotchain.io/register";  //注册接口 
+					$.ajax({
+						type: "POST",
+						url: interfaceAddress,
+						dataType: 'json',
+						timeout: 20000, // 设置超时
+						data: "ethAddr=" + ethAddress + "&inviterCode=" + inviterCode,
+						beforeSend: function (xhr) {
+							index = layer.load(1, {
+							  shade: [0.1,'#fff'] //0.1透明度的白色背景
+							});
+			            },
+						success: function(data) {
+							if(data.code == 200) {
+								//返回取到的privateCode值
+								var privateCode=data.data.privateCode;
+								//存在多种情况下的跳转
+								if(data.data.mailVerify==false){
+									// 邮箱未验证,跳转到邮箱验证页面
+									window.location="mail.html"+"?privateCode="+privateCode;
+								}else if(data.data.joinTelegram==false){
+									// telegram未认证,跳转到telegram页面
+									window.location="telegram.html?privateCode="+privateCode;
+								}else if(data.data.twitterTaskSign==true || data.data.facebookTaskSign==true){
+									// 分享任务未完成,跳转到task页面
+									window.location="task.html?privateCode="+privateCode;
+								}else if(data.data.verifyAll==true){
+									// 都完成了 还缺个跳转页面
+									window.location = "task.html?="+"?privateCode="+privateCode;;
+								}
+							}
+						},
+						complete: function(){
+				   	  		layer.close(index); //完成后关闭loading
+				   	   }
+					});
+				})
+			})
+		</script>
+		<script src="js/starcanvas.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

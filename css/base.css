@@ -1,0 +1,270 @@
+html,
+body {
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+  position: relative;
+}
+#space {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+.wrapall {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  overflow-y: auto;
+}
+.wraptop {
+  width: 660px;
+  position: absolute;
+  z-index: 9;
+  padding-bottom: 50px;
+  top: 50%;
+  left: 50%;
+  margin: -200px 0 0 -330px;
+  text-align: center;
+}
+.wraptop > img {
+  width: 152px;
+  display: block;
+  margin: 0 auto;
+}
+.wraptop p.indexp {
+  padding: 45px 0 45px 40px;
+  width: 560px;
+}
+.wraptop p {
+  padding: 45px 0 45px 50px;
+  display: block;
+  line-height: 1.5;
+  margin: 0 auto;
+  width: 610px;
+  font-size: 14px;
+  text-align: left;
+  color: #fff;
+}
+.wraptop p a {
+  color: #40beff;
+  text-decoration: underline;
+}
+.wraptop p.mailp {
+  text-align: center;
+  padding-bottom: 20px;
+  padding-left: 0!important;
+}
+.wraptop .btnfocus:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.wraptop input {
+  display: block;
+  margin: 0 auto 40px;
+  width: 315px;
+  box-sizing: border-box;
+  padding: 5px;
+  text-align: center;
+  height: 45px;
+  color: #bfbfbf;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  letter-spacing: 2px;
+  font-family: fixedsys;
+  background: url(../imgs/textarea.png) center center no-repeat;
+  background-size: 100% auto;
+}
+.wraptop input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.wraptop button {
+  display: block;
+  margin: 0 auto;
+  width: 181px;
+  height: 45px;
+  border: none;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: fixedsys;
+  color: #1998d7;
+  background: url(../imgs/button.png) center center no-repeat;
+  background-size: 100% auto;
+}
+.wraptop button:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.wraptop .skiplink {
+  padding-top: 20px;
+  text-align: center;
+}
+.wraptop .skiplink a {
+  color: #fff;
+  text-decoration: underline;
+  font-size: 14px;
+  font-family: fixedsys;
+}
+.wraptop .spacingline {
+  clear: both;
+  height: 40px;
+}
+.wraptop .step {
+  width: 450px;
+  margin: 0 auto 40px;
+}
+.wraptop .step .stepheader {
+  width: 450px;
+  height: 16px;
+  background: url(../imgs/stepbg_01.png) center center no-repeat;
+}
+.wraptop .step .stepbody {
+  width: 450px;
+  padding-bottom: 20px;
+  background: url(../imgs/stepbg_03.png) center center repeat-y;
+}
+.wraptop .step .stepbody ul {
+  float: left;
+  padding: 5px 0 0 15px;
+  text-align: left;
+}
+.wraptop .step .stepbody ul li {
+  font-size: 14px;
+}
+.wraptop .step .stepbody ul li strong {
+  display: block;
+  color: #1998d7;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: fixedsys;
+  text-shadow: 1px 1px 1px #fff;
+}
+.wraptop .step .stepbody ul li span {
+  padding-top: 5px;
+  font-size: 14px;
+  color: #fff;
+  display: block;
+}
+.wraptop .step .stepbody > a {
+  width: 115px;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  text-align: center;
+  float: right;
+  color: #1998d7;
+  font-family: fixedsys;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-right: 15px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  background: url(../imgs/stepbt.png) center center no-repeat;
+  background-size: 100% 100%;
+}
+.wraptop .step .stepfooter {
+  width: 450px;
+  height: 11px;
+  background: url(../imgs/stepbg_05.png) center center no-repeat;
+}
+.wraptop .task {
+  width: 450px;
+  margin: 0 auto 40px;
+}
+.wraptop .task .taskheader {
+  width: 450px;
+  height: 16px;
+  background: url(../imgs/stepbg_01.png) center center no-repeat;
+}
+.wraptop .task .taskbody {
+  width: 450px;
+  position: relative;
+  padding-bottom: 20px;
+  background: url(../imgs/stepbg_03.png) center center repeat-y;
+}
+.wraptop .task .taskbody dl dt {
+  display: block;
+  color: #1998d7;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-family: fixedsys;
+  text-shadow: 1px 1px 1px #fff;
+}
+.wraptop .task .taskbody dl dd {
+  padding-left: 15px;
+  padding-bottom: 10px;
+}
+.wraptop .task .taskbody dl dd img {
+  width: 15px;
+  float: left;
+  display: block;
+}
+.wraptop .task .taskbody dl dd span {
+  padding-right: 50px;
+  display: block;
+  margin-left: 30px;
+  color: #fff;
+  text-align: left;
+  line-height: 1.3;
+  font-size: 13px;
+}
+.wraptop .task .taskbody .tasklink {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 115px;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  text-align: center;
+  float: right;
+  overflow: hidden;
+  color: #1998d7;
+  font-family: fixedsys;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-right: 15px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  background: url(../imgs/stepbt.png) center center no-repeat;
+  background-size: 100% 100%;
+}
+.wraptop .task .taskbody .tasklink a {
+  color: #1998d7;
+}
+.wraptop .task .taskbody .tasklink img {
+  height: 18px;
+  float: left;
+  margin: 9px 0 0 15px;
+  display: inline-block;
+}
+.wraptop .task .taskbody .tasklink em {
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 5px;
+  font-style: normal;
+}
+.wraptop .task .taskbody .tasklink.hascompleted {
+  color: #999;
+}
+.wraptop .task .taskfooter {
+  width: 450px;
+  height: 11px;
+  background: url(../imgs/stepbg_05.png) center center no-repeat;
+}

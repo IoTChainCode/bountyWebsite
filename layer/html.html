@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<script src="../js/jquery-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!--推特分享 hack写法-->
+		<script type="text/javascript">
+			window.twttr = (function(d, s, id) {
+				var t, js, fjs = d.getElementsByTagName(s)[0];
+				if(d.getElementById(id)) return;
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//platform.twitter.com/widgets.js";
+				fjs.parentNode.insertBefore(js, fjs);
+				return window.twttr || (t = {
+					_e: [],
+					ready: function(f) {
+						t._e.push(f)
+					}
+				});
+			}(document, "script", "twitter-wjs"));
+
+			$(document).on('click', '.twitter', function() {
+
+				var tweetUrl = 'https://twitter.com/intent/tweet?url=' + window.location.href;
+				var x = screen.width / 2 - 700 / 2;
+				var y = screen.height / 2 - 450 / 2;
+				var child = window.open(tweetUrl, "popupWindow", "width=600, height=400,left=" + x + ",top=" + y);
+				child.focus();
+				var timer = setInterval(checkChild, 1);
+				document.domain = 'example.com'; //Replace it with your domain
+				function checkChild() {
+					if(child.closed) {
+						clearInterval(timer);
+					}
+					if(child.window.closed) { //Code in this condition will execute after successfull post
+						//Do your stuff here
+						clearInterval(timer);
+					}
+				}
+			});
+		</script>
+
+		<a class="twitter" href="javascript:void(0)">Tweet</a>
+
+	</body>
+
+</html>
